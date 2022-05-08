@@ -1,0 +1,29 @@
+{
+  "name": "node-clhash",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "Bindings for the CLHash C API to the Node.js world",
+  "main": "src/index.js",
+  "typings": "typings/index.d.ts",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "clhash"
+  ],
+  "scripts": {
+    "install": "node-gyp-build",
+    "rebuild": "node-gyp rebuild",
+    "prebuild": "prebuildify --napi --strip",
+    "prebuild-cross": "prebuildify-cross --napi --strip"
+  },
+  "dependencies": {
+    "node-addon-api": "^5.0.0",
+    "node-gyp-build": "^4.4.0"
+  },
+  "devDependencies": {
+    "node-gyp": "^9.0.0",
+    "prebuildify": "^5.0.0",
+    "prebuildify-cross": "^5.0.0"
+  }
+}

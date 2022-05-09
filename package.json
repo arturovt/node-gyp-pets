@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "license": "MIT",
   "description": "Bindings for the CLHash C API to the Node.js world",
-  "main": "src/index.js",
-  "typings": "typings/index.d.ts",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs"
+    }
+  },
+  "typings": "./typings/index.d.ts",
   "engines": {
     "node": ">=16.0.0"
   },
@@ -18,7 +25,6 @@
     "prebuild-cross": "prebuildify-cross --napi --strip"
   },
   "dependencies": {
-    "node-addon-api": "^5.0.0",
     "node-gyp-build": "^4.4.0"
   },
   "devDependencies": {

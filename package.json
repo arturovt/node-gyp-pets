@@ -1,6 +1,6 @@
 {
   "name": "node-clhash",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "description": "Bindings for the CLHash C API to the Node.js world",
   "main": "./lib/index.cjs",

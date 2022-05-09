@@ -2,6 +2,8 @@
 
 Node.js library that provides bindings for the CLHash C library (https://github.com/lemire/clhash).
 
+> ⚠️ The package compilation requirements are the same as the CLHash library requirements (see https://github.com/lemire/clhash#requirements).
+
 To install the package run the following command:
 
 ```sh

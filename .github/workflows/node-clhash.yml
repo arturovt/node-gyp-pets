@@ -31,3 +31,4 @@ jobs:
           architecture: ${{ matrix.node }}
       - run: yarn --pure-lockfile --no-progress --non-interactive --ignore-scripts
       - run: yarn ${{ matrix.command }}
+      - run: node tests/index.js

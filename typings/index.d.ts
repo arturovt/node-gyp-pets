@@ -1,4 +1,17 @@
 declare module 'node-clhash' {
-  function clhash(input: string): { key: BigInt; hashed: BigInt };
+  interface ClhashResult {
+    key: BigInt;
+    hashed: BigInt;
+  }
+
+  function clhash(
+    input: string,
+    callback: (error: Error | null, result?: ClhashResult) => void
+  ): void;
+
+  namespace clhash {
+    function sync(input: string): ClhashResult;
+  }
+
   export { clhash };
 }

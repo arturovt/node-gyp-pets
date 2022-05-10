@@ -4,6 +4,7 @@ dist
 yarn-error.log
 build
 .vscode
+.github
 scripts
 .dockerignore
 .gitignore

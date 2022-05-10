@@ -4,3 +4,4 @@ dist
 yarn-error.log
 build
 .vscode
+.github

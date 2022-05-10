@@ -1,0 +1,33 @@
+name: node-clhash
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  prebuild:
+    strategy:
+      matrix:
+        include:
+          - name: darwin
+            os: macos-11
+            node: x64
+            command: prebuild --arch x64+arm64
+          - name: linux-x64
+            os: ubuntu-20.04
+            node: x64
+            command: prebuild --arch x64+arm64
+    name: Prebuild ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          architecture: ${{ matrix.node }}
+      - run: yarn --pure-lockfile --no-progress --non-interactive --ignore-scripts
+      - run: yarn ${{ matrix.command }}

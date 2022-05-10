@@ -6,8 +6,10 @@
 #include <node_api.h>
 
 #include <random>
+#include <utility>
 
-napi_value clhash(napi_env, napi_callback_info);
-napi_value init(napi_env, napi_value);
+static napi_value clhash_sync(napi_env, napi_callback_info);
+static napi_value clhash(napi_env, napi_callback_info);
+static napi_value init(napi_env, napi_value);
 
 #endif

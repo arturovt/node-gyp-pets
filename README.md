@@ -16,8 +16,14 @@ The `get_random_key_for_clhash` uses `posix_memalign` internally and needs to be
 
 ```js
 const { clhash } = require('node-clhash');
-const { key, hashed } = clhash('my long string');
+// Generate synchronously.
+const { key, hashed } = clhash.sync('my long string');
 console.log({ key, hashed }); // { key: 5067639175440424385n, hashed: 8451564168848164053n }
+
+// Generate asynchronously.
+clhash('my long string', (error, { key, hashed }) => {
+  console.log({ key, hashed }); // { key: 5067639175440424385n, hashed: 8451564168848164053n }
+});
 ```
 
 The `key` and `hashed` values are `BigInt`. The `clhash` returns `uint64_t`, which is `unsigned long long`. The maximum `uint64_t` value is `2 ^ 64 - 1` and the maximum JavaScript integer value is `2 ^ 53 - 1` (`Number.MAX_SAFE_INTEGER`).

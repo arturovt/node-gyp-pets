@@ -1,0 +1,4 @@
+[submodule "libfdp"]
+	path = libfdp
+	url = https://github.com/lemire/fast_double_parser
+	shallow = true

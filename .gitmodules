@@ -2,3 +2,7 @@
 	path = libfdp
 	url = https://github.com/lemire/fast_double_parser
 	shallow = true
+[submodule "libdc"]
+	path = libdc
+	url = https://github.com/google/double-conversion
+	shallow = true

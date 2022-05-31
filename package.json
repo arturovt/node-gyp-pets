@@ -1,12 +1,19 @@
 {
-  "name": "node-fdp",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "node-string-to-double-comparisons",
+  "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "install": "node-gyp-build",
+    "rebuild": "node-gyp rebuild"
+  },
   "dependencies": {
     "node-gyp-build": "^4.4.0"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "node-gyp": "^9.0.0"
   }
 }

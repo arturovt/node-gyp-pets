@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const assert = require('assert');
-const { performance } = require('perf_hooks');
+const Benchmark = require('benchmark');
 
 const { strtod, parseNumber } = require('../build/Release/node_fdp.node');
 
@@ -12,39 +11,22 @@ const source = fs
 const strings = source.split('\n');
 strings.pop();
 
-let t0, t1;
+const suite = new Benchmark.Suite();
 
-const parseFloatResults = [];
-t0 = performance.now();
-for (const string of strings) {
-  parseFloatResults.push(parseFloat(string));
-}
-t1 = performance.now();
-
-console.log(`parseFloat: ${t1 - t0}ms.`);
-
-const strtodResults = [];
-t0 = performance.now();
-for (const string of strings) {
-  strtodResults.push(strtod(string));
-}
-t1 = performance.now();
-
-console.log(`strtod: ${t1 - t0}ms.`);
-
-const parseNumberResults = [];
-t0 = performance.now();
-for (const string of strings) {
-  parseNumberResults.push(parseNumber(string));
-}
-t1 = performance.now();
-
-console.log(`parseNumber: ${t1 - t0}ms.`);
-
-assert(parseFloatResults.length === strtodResults.length);
-assert(parseFloatResults.length === parseNumberResults.length);
-for (let index = 0, length = parseFloatResults.length; index < length; index++) {
-  const parseFloatResult = parseFloatResults[index];
-  assert(parseFloatResult === strtodResults[index]);
-  assert(parseFloatResult === parseNumberResults[index]);
-}
+suite
+  .add('parseFloat', () => {
+    strings.forEach(string => parseFloat(string));
+  })
+  .add('strtod', () => {
+    strings.forEach((string) => strtod(string));
+  })
+  .add('parseNumber', () => {
+    strings.forEach((string) => parseNumber(string));
+  })
+  .on('cycle', (event) => {
+    console.log(String(event.target));
+  })
+  .on('complete', function () {
+    console.log('Fastest is ' + this.filter('fastest').map('name'));
+  })
+  .run({ async: true });

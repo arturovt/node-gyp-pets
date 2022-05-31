@@ -2,19 +2,14 @@
 #include <js_native_api.h>
 #include <node_api.h>
 
-static inline char* get_input(napi_env env, napi_value* argv) {
-  size_t input_size;
-  napi_get_value_string_utf8(env, argv[0], nullptr, 0, &input_size);
-  // We need to increase the size of the input since the last symbol is NULL.
-  input_size += 1;
-  char* input = new char[input_size]();
-  napi_get_value_string_utf8(env, argv[0], input, input_size, nullptr);
-  return input;
-}
+#include "google_string_to_double.h"
+#include "utils.h"
+
+typedef const char* (*parser)(const char*, double*);
 
 static inline napi_value parse(napi_env env,
                                napi_callback_info info,
-                               const char* (*parser)(const char*, double*)) {
+                               parser parser) {
   size_t argc = 1;
   napi_value argv[argc];
   napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -33,10 +28,10 @@ static inline napi_value parse(napi_env env,
   }
 
   double parsed = 0.0;
-  const char* input = get_input(env, argv);
+  std::pair<char*, size_t> pair = get_input(env, argv);
   // If it is `nullptr`, then the function refused to parse the input.
-  const char* result_pointer = parser(input, &parsed);
-  delete input;
+  const char* result_pointer = parser(pair.first, &parsed);
+  delete pair.first;
 
   if (!result_pointer) {
     napi_throw_error(

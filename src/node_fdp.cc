@@ -28,10 +28,10 @@ static inline napi_value parse(napi_env env,
   }
 
   double parsed = 0.0;
-  std::pair<char*, size_t> pair = get_input(env, argv);
+  const char* input = get_input(env, argv);
   // If it is `nullptr`, then the function refused to parse the input.
-  const char* result_pointer = parser(pair.first, &parsed);
-  delete pair.first;
+  const char* result_pointer = parser(input, &parsed);
+  delete input;
 
   if (!result_pointer) {
     napi_throw_error(
@@ -64,6 +64,12 @@ napi_value init(napi_env env, napi_value exports) {
   napi_create_function(env, nullptr, NAPI_AUTO_LENGTH, parse_number, nullptr,
                        &parse_number_fn);
   napi_set_named_property(env, exports, "parseNumber", parse_number_fn);
+
+  napi_value google_string_to_double_fn;
+  napi_create_function(env, nullptr, NAPI_AUTO_LENGTH, google_string_to_double,
+                       nullptr, &google_string_to_double_fn);
+  napi_set_named_property(env, exports, "googleStringToDouble",
+                          google_string_to_double_fn);
 
   return exports;
 }

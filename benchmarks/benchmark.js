@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const assert = require('assert');
 const Benchmark = require('benchmark');
 
-const { strtod, parseNumber } = require('../build/Release/node_fdp.node');
+const { strtod, parseNumber, googleStringToDouble } = require('../build/Release/node_fdp.node');
 
 const source = fs
   .readFileSync(path.join(__dirname, '../libfdp/benchmarks/data/canada.txt'))
@@ -11,22 +12,40 @@ const source = fs
 const strings = source.split('\n');
 strings.pop();
 
-const suite = new Benchmark.Suite();
+function validate() {
+  // Ensure that all parsed numbers are equal.
+  strings.forEach(string => {
+    const native = parseFloat(string);
+    assert.equal(native, strtod(string));
+    assert.equal(native, parseNumber(string));
+    assert.equal(native, googleStringToDouble(string));
+  });
+}
 
-suite
-  .add('parseFloat', () => {
-    strings.forEach(string => parseFloat(string));
-  })
-  .add('strtod', () => {
-    strings.forEach((string) => strtod(string));
-  })
-  .add('parseNumber', () => {
-    strings.forEach((string) => parseNumber(string));
-  })
-  .on('cycle', (event) => {
-    console.log(String(event.target));
-  })
-  .on('complete', function () {
-    console.log('Fastest is ' + this.filter('fastest').map('name'));
-  })
-  .run({ async: true });
+function runSuite() {
+  const suite = new Benchmark.Suite();
+
+  suite
+    .add('parseFloat', () => {
+      strings.forEach(string => parseFloat(string));
+    })
+    .add('fast_double_parser::parse_float_strtod', () => {
+      strings.forEach(string => strtod(string));
+    })
+    .add('fast_double_parser::parse_number', () => {
+      strings.forEach(string => parseNumber(string));
+    })
+    .add('double_conversion::StringToDoubleConverter', () => {
+      strings.forEach(string => googleStringToDouble(string));
+    })
+    .on('cycle', event => {
+      console.log(String(event.target));
+    })
+    .on('complete', function () {
+      console.log('Fastest is ' + this.filter('fastest').map('name'));
+    })
+    .run({ async: true });
+}
+
+validate();
+runSuite();

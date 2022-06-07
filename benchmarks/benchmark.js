@@ -3,7 +3,12 @@ const path = require('path');
 const assert = require('assert');
 const Benchmark = require('benchmark');
 
-const { strtod, parseNumber, googleStringToDouble } = require('../build/Release/node_fdp.node');
+const {
+  strtod,
+  parseNumber,
+  googleStringToDouble,
+  stdlibAtof,
+} = require('../build/Release/node_fdp.node');
 
 const source = fs
   .readFileSync(path.join(__dirname, '../libfdp/benchmarks/data/canada.txt'))
@@ -19,6 +24,7 @@ function validate() {
     assert.equal(native, strtod(string));
     assert.equal(native, parseNumber(string));
     assert.equal(native, googleStringToDouble(string));
+    assert.equal(native, stdlibAtof(string));
   });
 }
 
@@ -37,6 +43,9 @@ function runSuite() {
     })
     .add('double_conversion::StringToDoubleConverter', () => {
       strings.forEach(string => googleStringToDouble(string));
+    })
+    .add('stdlib.atof', () => {
+      strings.forEach(string => stdlibAtof(string));
     })
     .on('cycle', event => {
       console.log(String(event.target));

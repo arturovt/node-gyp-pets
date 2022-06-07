@@ -2,6 +2,7 @@
 #include <js_native_api.h>
 #include <node_api.h>
 
+#include "atof.h"
 #include "google_string_to_double.h"
 #include "utils.h"
 
@@ -22,8 +23,7 @@ static inline napi_value parse(napi_env env,
   napi_valuetype argument_type;
   napi_typeof(env, argv[0], &argument_type);
   if (argument_type != napi_string) {
-    napi_throw_type_error(env, nullptr,
-                          "The input data to be encoded should be a string.");
+    napi_throw_type_error(env, nullptr, "The input data should be a string.");
     return nullptr;
   }
 
@@ -70,6 +70,11 @@ napi_value init(napi_env env, napi_value exports) {
                        nullptr, &google_string_to_double_fn);
   napi_set_named_property(env, exports, "googleStringToDouble",
                           google_string_to_double_fn);
+
+  napi_value stdlib_atof_fn;
+  napi_create_function(env, nullptr, NAPI_AUTO_LENGTH, stdlib_atof, nullptr,
+                       &stdlib_atof_fn);
+  napi_set_named_property(env, exports, "stdlibAtof", stdlib_atof_fn);
 
   return exports;
 }

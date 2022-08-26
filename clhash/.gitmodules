@@ -1,0 +1,4 @@
+[submodule "libclhash"]
+	path = libclhash
+	url = https://github.com/lemire/clhash
+	shallow = true

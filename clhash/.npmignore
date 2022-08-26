@@ -1,0 +1,11 @@
+node_modules
+dist
+.DS_Store
+yarn-error.log
+build
+.vscode
+.github
+scripts
+.dockerignore
+.gitignore
+tests

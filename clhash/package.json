@@ -1,0 +1,43 @@
+{
+  "name": "node-clhash",
+  "version": "1.2.1",
+  "license": "MIT",
+  "description": "Bindings for the CLHash C API to the Node.js world",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs"
+    }
+  },
+  "typings": "./typings/index.d.ts",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturovt/node-clhash.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arturovt/node-clhash/issues"
+  },
+  "homepage": "https://github.com/arturovt/node-clhash#readme",
+  "keywords": [
+    "clhash"
+  ],
+  "scripts": {
+    "install": "node-gyp-build",
+    "rebuild": "node-gyp rebuild",
+    "prebuild": "prebuildify --napi --strip",
+    "prebuild-cross": "prebuildify-cross --napi --strip"
+  },
+  "dependencies": {
+    "node-gyp-build": "^4.4.0"
+  },
+  "devDependencies": {
+    "node-gyp": "^9.0.0",
+    "prebuildify": "^5.0.0",
+    "prebuildify-cross": "^5.0.0"
+  }
+}

@@ -1,0 +1,4 @@
+[submodule "libobdii"]
+	path = libobdii
+	url = https://github.com/ejvaughan/obdii
+	shallow = true

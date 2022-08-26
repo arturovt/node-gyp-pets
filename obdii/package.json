@@ -1,0 +1,17 @@
+{
+  "name": "node-obdii",
+  "description": "Bindings for the OBD-II C API to the Node.js world",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "install": "node-gyp configure && node-gyp build",
+    "rebuild": "node-gyp rebuild"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^5.0.0"
+  },
+  "devDependencies": {
+    "node-gyp": "^9.0.0"
+  }
+}

@@ -1,0 +1,42 @@
+name: node-obdii
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - uses: actions/cache@v3
+        id: docker-cache
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-docker-cache
+          restore-keys: ${{ runner.os }}-docker-cache
+
+      - name: Pull Docker image
+        if: steps.docker-cache.outputs.cache-hit != 'true'
+        env:
+          NODE_TAG: '16'
+        run: |
+          mkdir -p ~/.cache
+          docker pull node:$NODE_TAG
+          docker save node:$NODE_TAG > ~/.cache/node.tar
+
+      - name: Load Docker image from tar archive
+        if: steps.docker-cache.outputs.cache-hit == 'true'
+        run: docker load < ~/.cache/node.tar
+
+      - name: Build Docker image
+        run: docker build -t node-obdii .
+
+      - name: Run container
+        run: docker run node-obdii
+
